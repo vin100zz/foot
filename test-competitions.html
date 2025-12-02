@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Compétitions</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-section { background: white; padding: 20px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: #333; }
+        .teams-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .team-item { padding: 10px; border-radius: 6px; color: white; text-align: center; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .error { color: red; background: #ffe0e0; padding: 10px; border-radius: 6px; }
+        .success { color: green; background: #e0ffe0; padding: 10px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test des Compétitions</h1>
+    <div id="test-results"></div>
+
+    <script src="./config.js"></script>
+    <script>
+        const resultsDiv = document.getElementById('test-results');
+
+        function addResult(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            resultsDiv.appendChild(div);
+        }
+
+        // Tester les compétitions
+        if (typeof COMPETITIONS === 'undefined') {
+            addResult('<div class="error">❌ COMPETITIONS non défini</div>');
+        } else {
+            addResult('<div class="success">✓ COMPETITIONS chargé</div>');
+
+            Object.keys(COMPETITIONS).forEach(compId => {
+                const comp = COMPETITIONS[compId];
+                const teamsCount = comp.teams ? comp.teams.length : 0;
+                const statusClass = teamsCount === 8 ? 'success' : 'error';
+                const status = teamsCount === 8 ? '✓' : '❌';
+
+                let html = `
+                    <div class="test-section">
+                        <h2>${status} ${comp.name} ${comp.country}</h2>
+                        <p><strong>ID:</strong> ${compId}</p>
+                        <p><strong>Équipes:</strong> ${teamsCount}/8</p>
+                        <div class="teams-list">
+                `;
+
+                if (comp.teams) {
+                    comp.teams.forEach(team => {
+                        html += `<div class="team-item" style="background: ${team.kit.bg};">${team.short}</div>`;
+                    });
+                }
+
+                html += `</div></div>`;
+                addResult(html);
+            });
+        }
+
+        // Tester TEAMS_CONFIG
+        if (typeof TEAMS_CONFIG === 'undefined') {
+            addResult('<div class="error">❌ TEAMS_CONFIG non défini</div>');
+        } else {
+            const teamsCount = TEAMS_CONFIG.length;
+            const statusClass = teamsCount === 8 ? 'success' : 'error';
+            const status = teamsCount === 8 ? '✓' : '❌';
+            addResult(`<div class="test-section"><h2>${status} TEAMS_CONFIG</h2><p>Équipes: ${teamsCount}/8</p></div>`);
+        }
+    </script>
+</body>
+</html>
+

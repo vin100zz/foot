@@ -1,9 +1,11 @@
 /* Simulateur de championnat - entièrement côté client, sans compilation */
 (function(){
-  const STORAGE_KEY = 'foot8_state_v1';
+  const STORAGE_KEY_PREFIX = 'foot8_state_';
+  let currentCompetition = null;
+  let STORAGE_KEY = null;
 
   // Utiliser la configuration importée
-  const TEAMS = TEAMS_CONFIG;
+  let TEAMS = [];
 
   // shuffle array (Fisher-Yates)
   function shuffle(arr){
@@ -79,11 +81,16 @@
   }
 
   // state
-  let state = {teams: TEAMS, matches: [], updated: Date.now()};
+  let state = {teams: [], matches: [], updated: Date.now()};
 
-  function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function saveState(){
+    if(STORAGE_KEY) localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
   function loadState(){
-    const raw = localStorage.getItem(STORAGE_KEY);
+    // Réinitialiser l'état avec les équipes courantes
+    state = {teams: TEAMS, matches: [], updated: Date.now()};
+
+    const raw = STORAGE_KEY ? localStorage.getItem(STORAGE_KEY) : null;
     if(raw){
       try{ state = JSON.parse(raw); }
       catch(e){ console.warn('Invalid state in storage, resetting'); }
@@ -92,6 +99,7 @@
       const rounds = generateRoundRobin(TEAMS);
       assignAlternating(rounds);
       state.matches = buildMatchesFromRounds(rounds);
+      state.teams = TEAMS;
       saveState();
     }
   }
@@ -246,7 +254,24 @@
     if(screen) screen.classList.add('active');
   }
 
-  function startChampionship(){
+  function startChampionship(competitionId){
+    // Vérifier si la compétition existe
+    if(!COMPETITIONS || !COMPETITIONS[competitionId]){
+      console.error('Compétition introuvable:', competitionId);
+      return;
+    }
+
+    // Définir la compétition courante et les équipes
+    currentCompetition = competitionId;
+    TEAMS = COMPETITIONS[competitionId].teams;
+    STORAGE_KEY = STORAGE_KEY_PREFIX + competitionId;
+
+    // Mettre à jour le titre du championnat
+    const titleEl = document.getElementById('championship-title');
+    if(titleEl){
+      titleEl.textContent = '⚽ ' + COMPETITIONS[competitionId].name;
+    }
+
     // Réinitialiser le localStorage pour générer un nouveau calendrier
     localStorage.removeItem(STORAGE_KEY);
     // Charger ou créer l'état
@@ -272,7 +297,10 @@
 
     // wire compétitions
     document.querySelectorAll('.competition-btn').forEach(btn=>{
-      btn.addEventListener('click', ()=>{ startChampionship(); });
+      btn.addEventListener('click', ()=>{
+        const competitionId = btn.getAttribute('data-competition');
+        startChampionship(competitionId);
+      });
     });
   }
 

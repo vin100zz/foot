@@ -19,6 +19,26 @@
           <div class="competition-name">Premier League</div>
           <div class="competition-desc">8 équipes anglaises</div>
         </button>
+        <button class="competition-btn" data-competition="italian-serie" aria-label="Lancer la Serie A italienne">
+          <div class="competition-icon">🇮🇹</div>
+          <div class="competition-name">Serie A</div>
+          <div class="competition-desc">8 équipes italiennes</div>
+        </button>
+        <button class="competition-btn" data-competition="spanish-laliga" aria-label="Lancer la La Liga espagnole">
+          <div class="competition-icon">🇪🇸</div>
+          <div class="competition-name">La Liga</div>
+          <div class="competition-desc">8 équipes espagnoles</div>
+        </button>
+        <button class="competition-btn" data-competition="french-ligue1" aria-label="Lancer la Ligue 1 française">
+          <div class="competition-icon">🇫🇷</div>
+          <div class="competition-name">Ligue 1</div>
+          <div class="competition-desc">8 équipes françaises</div>
+        </button>
+        <button class="competition-btn" data-competition="german-bundesliga" aria-label="Lancer la Bundesliga allemande">
+          <div class="competition-icon">🇩🇪</div>
+          <div class="competition-name">Bundesliga</div>
+          <div class="competition-desc">8 équipes allemandes</div>
+        </button>
       </div>
     </div>
   </div>
@@ -26,7 +46,7 @@
   <!-- Écran du championnat -->
   <div id="championship-screen" class="screen">
     <header>
-      <h1>⚽ Championnat</h1>
+      <h1 id="championship-title">⚽ Championnat</h1>
       <div class="header-actions">
         <button id="btn-random-all" title="Simuler tous les matches">▶</button>
         <button id="btn-reset" title="Retour à l'accueil">↻</button>
@@ -73,7 +93,24 @@
   <script src="./config.js"></script>
   <script>
     // Générer dynamiquement le CSS des kits depuis la configuration
-    if(typeof TEAMS_CONFIG !== 'undefined'){
+    if(typeof COMPETITIONS !== 'undefined'){
+      const style = document.createElement('style');
+      let css = '';
+
+      // Générer les CSS pour tous les kits de toutes les compétitions
+      Object.values(COMPETITIONS).forEach(comp => {
+        comp.teams.forEach(team => {
+          const shadow = team.kit.shadow === 'inset'
+            ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
+            : '';
+          css += `.kit.team-${team.id}{background:${team.kit.bg}${shadow}}\n`;
+        });
+      });
+
+      style.textContent = css;
+      document.head.appendChild(style);
+    } else if(typeof TEAMS_CONFIG !== 'undefined'){
+      // Fallback pour les anciennes versions
       const style = document.createElement('style');
       let css = '';
       TEAMS_CONFIG.forEach(team => {
