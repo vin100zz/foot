@@ -121,10 +121,10 @@
     return arr.map((t,i)=>({...t,pos:i+1,diff:t.gf - t.ga}));
   }
 
-  // rendering
-  const roundsContainer = document.getElementById('rounds');
-  const standingsTbody = document.querySelector('#table-standings tbody');
-  const matchTemplate = document.getElementById('match-row-template');
+  // rendering - lazy load des références DOM
+  function getRoundsContainer(){ return document.getElementById('rounds'); }
+  function getStandingsTbody(){ return document.querySelector('#table-standings tbody'); }
+  function getMatchTemplate(){ return document.getElementById('match-row-template'); }
 
   function findTeam(id){ return state.teams.find(t=>t.id===id) || {id,name:'?'}; }
 
@@ -134,9 +134,11 @@
   }
 
   function renderRounds(){
+    const roundsContainer = getRoundsContainer();
     roundsContainer.innerHTML = '';
     const grouped = groupMatchesByDay();
     const grid = document.createElement('div'); grid.className = 'rounds-grid';
+    const matchTemplate = getMatchTemplate();
     grouped.forEach(group=>{
       const div = document.createElement('div'); div.className='round';
       const h = document.createElement('h3'); h.textContent = `Journée ${group.day}`;
@@ -181,6 +183,7 @@
   }
 
   function renderStandings(){
+    const standingsTbody = getStandingsTbody();
     const rows = computeStandings();
     standingsTbody.innerHTML = '';
     rows.forEach(r=>{
@@ -236,24 +239,49 @@
     state.updated = Date.now(); saveState(); render();
   }
 
-  // reset
-  function reset(){
-    localStorage.removeItem(STORAGE_KEY);
-    // Générer un nouveau calendrier
-    const rounds = generateRoundRobin(TEAMS);
-    assignAlternating(rounds);
-    state.matches = buildMatchesFromRounds(rounds);
-    state.updated = Date.now();
-    saveState();
-    render();
+  // Navigation entre écrans
+  function showScreen(screenId){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    const screen = document.getElementById(screenId);
+    if(screen) screen.classList.add('active');
   }
 
-  // wire buttons
-  document.getElementById('btn-reset').addEventListener('click', ()=>{ if(confirm('Réinitialiser toutes les données ?')) reset(); });
-  document.getElementById('btn-random-all').addEventListener('click', ()=>{ if(confirm('Simuler tous les matches non joués ?')) simulateAll(); });
+  function startChampionship(){
+    // Réinitialiser le localStorage pour générer un nouveau calendrier
+    localStorage.removeItem(STORAGE_KEY);
+    // Charger ou créer l'état
+    loadState();
+    // Rendre le contenu
+    render();
+    // Afficher l'écran du championnat
+    showScreen('championship-screen');
+  }
 
-  loadState();
-  render();
+  // reset: retourner à l'accueil
+  function reset(){
+    showScreen('home-screen');
+  }
+
+  // Initialiser les event listeners quand le DOM est prêt
+  function initEventListeners(){
+    const resetBtn = document.getElementById('btn-reset');
+    const randomAllBtn = document.getElementById('btn-random-all');
+
+    if(resetBtn) resetBtn.addEventListener('click', reset);
+    if(randomAllBtn) randomAllBtn.addEventListener('click', ()=>{ if(confirm('Simuler tous les matches non joués ?')) simulateAll(); });
+
+    // wire compétitions
+    document.querySelectorAll('.competition-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{ startChampionship(); });
+    });
+  }
+
+  // Attendre que le DOM soit prêt
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initEventListeners);
+  } else {
+    initEventListeners();
+  }
 
   // expose some simple self-tests for manual console validation
   function selfTest(){

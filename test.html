@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Navigation</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .screen { display: none; padding: 20px; border: 2px solid #333; margin: 10px 0; }
+        .screen.active { display: block; background-color: #f0f0f0; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Test de Navigation</h1>
+
+    <div id="home-screen" class="screen active">
+        <h2>Page d'accueil</h2>
+        <button id="start-btn">Démarrer le championnat</button>
+    </div>
+
+    <div id="championship-screen" class="screen">
+        <h2>Championnat</h2>
+        <button id="back-btn">Retour à l'accueil</button>
+        <p>Contenu du championnat ici...</p>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            console.log('showScreen appelé avec:', screenId);
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.remove('active');
+                console.log('Classe active supprimée de:', s.id);
+            });
+            const screen = document.getElementById(screenId);
+            if (screen) {
+                screen.classList.add('active');
+                console.log('Classe active ajoutée à:', screenId);
+            } else {
+                console.error('Écran introuvable:', screenId);
+            }
+        }
+
+        document.getElementById('start-btn').addEventListener('click', () => {
+            console.log('Bouton Démarrer cliqué');
+            showScreen('championship-screen');
+        });
+
+        document.getElementById('back-btn').addEventListener('click', () => {
+            console.log('Bouton Retour cliqué');
+            showScreen('home-screen');
+        });
+
+        console.log('Scripts chargés et initialisés');
+    </script>
+</body>
+</html>
+
