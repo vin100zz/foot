@@ -1,0 +1,53 @@
+/* Layout compact et moderne */
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif}
+:root{--fs:13px;--gap:6px;--primary:#3b82f6;--primary-light:#60a5fa;--bg:#f8fafc;--card-bg:#fff;--border:#e2e8f0;--text:#1e293b}
+body{margin:0;background:var(--bg);color:var(--text);font-size:var(--fs);line-height:1.5}
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--card-bg);border-bottom:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+header h1{margin:0;font-size:16px;font-weight:600;letter-spacing:-0.5px}
+.header-actions{display:flex;gap:8px}
+main{display:flex;gap:10px;padding:12px;align-items:flex-start}
+/* Matches column: use grid to show multiple rounds side-by-side */
+.matches{flex:1}
+.matches .rounds-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:1100px){.matches .rounds-grid{grid-template-columns:1fr 1fr}}
+.standings{width:240px;background:var(--card-bg);padding:10px;border-radius:10px;border:1px solid var(--border);height:fit-content;position:sticky;top:12px;align-self:flex-start;z-index:5;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.standings h2{margin:0 0 8px 0;font-size:13px;font-weight:600}
+.round{background:var(--card-bg);margin-bottom:8px;padding:8px;border-radius:10px;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,0.02)}
+.round h3{margin:0 0 8px 0;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.match-row{display:flex;align-items:center;gap:0;padding:6px;border-radius:8px;transition:background 0.2s}
+.match-row:hover{background:#f1f5f9}
+.team.home{display:flex;align-items:center;gap:6px;width:140px;min-width:0;justify-content:flex-end;flex-shrink:0;order:1}
+.team.home .name{font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;order:2}
+.team.home .kit{width:18px;height:18px;display:inline-block;box-shadow:0 1px 3px rgba(0,0,0,0.1);flex-shrink:0;order:1}
+.score{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;flex:0 0 auto;padding:0 12px;justify-content:center;order:2}
+.score input{width:36px;padding:4px 6px;border-radius:6px;border:none;font-size:13px;text-align:center;transition:all 0.2s;background:transparent;color:#0F87FF;font-weight:bold}
+.score input::-webkit-outer-spin-button,.score input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.score input[type=number]{-moz-appearance:textfield}
+.score input:focus{outline:none;border-bottom:2px solid var(--primary);background:var(--bg)}
+.team.away{display:flex;align-items:center;gap:6px;width:140px;min-width:0;justify-content:flex-start;flex-shrink:0;order:3}
+.team.away .kit{width:18px;height:18px;display:inline-block;box-shadow:0 1px 3px rgba(0,0,0,0.1);flex-shrink:0;order:3}
+.team.away .name{font-weight:600;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;order:2}
+.actions{margin-left:6px;order:4}
+.actions{margin-left:6px}
+button{padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--card-bg);cursor:pointer;font-size:13px;transition:all 0.2s;font-weight:500}
+button:hover{border-color:var(--primary);background:#f0f6ff;color:var(--primary)}
+button:active{transform:scale(0.95)}
+#btn-reset,#btn-random-all{padding:8px 12px;font-size:14px}
+.btn-sim{padding:6px 8px;font-size:14px;line-height:1;min-width:34px;display:flex;align-items:center;justify-content:center;background:var(--primary);border:none;color:#fff;font-weight:600;box-shadow:0 2px 4px rgba(59,130,246,0.3)}
+.btn-sim:hover{background:var(--primary-light);box-shadow:0 4px 8px rgba(59,130,246,0.4)}
+.btn-sim:active{transform:scale(0.92)}
+.btn-round-sim{padding:6px 8px;font-size:12px;line-height:1;min-width:32px;display:flex;align-items:center;justify-content:center;background:var(--primary);border:none;color:#fff;font-weight:600;box-shadow:0 2px 4px rgba(59,130,246,0.3)}
+.btn-round-sim:hover{background:var(--primary-light);box-shadow:0 4px 8px rgba(59,130,246,0.4)}
+.btn-round-sim:active{transform:scale(0.92)}
+#table-standings{width:100%;border-collapse:collapse;font-size:12px}
+#table-standings th{font-weight:600;font-size:12px;text-align:left;padding:6px 4px;border-bottom:1px solid var(--border)}
+#table-standings td{padding:6px 4px;border-bottom:1px solid var(--border)}
+#table-standings tbody tr:hover{background:#f8fafc}
+.pos{width:24px;font-weight:600}
+.team-cell{display:flex;align-items:center;gap:6px;font-weight:500}
+.team-cell .kit{width:16px;height:16px}
+.kit {border-radius:50%;border: 1px solid #bbb;}
+/* Kits (styles générés dynamiquement depuis config.js) */
+/* Les styles spécifiques de chaque équipe sont injectés via JavaScript */
+@media(max-width:900px){main{padding:8px;gap:8px}.matches .rounds-grid{grid-template-columns:1fr}.standings{width:100%;position:sticky;top:0;margin-bottom:8px}}
+/* end modern layout */

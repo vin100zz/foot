@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Simulateur de championnat - 8 équipes</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23fff' stroke='%23000' stroke-width='2'/><path d='M50 10 L65 30 L50 35 L35 30 Z' fill='%23000'/><path d='M50 90 L65 70 L50 65 L35 70 Z' fill='%23000'/><path d='M10 50 L30 35 L35 50 L30 65 Z' fill='%23000'/><path d='M90 50 L70 35 L65 50 L70 65 Z' fill='%23000'/><circle cx='50' cy='50' r='8' fill='%23000'/></svg>">
+</head>
+<body>
+  <header>
+    <h1>⚽ Championnat</h1>
+    <div class="header-actions">
+      <button id="btn-random-all" title="Simuler tous les matches">▶</button>
+      <button id="btn-reset" title="Réinitialiser les données">↻</button>
+    </div>
+  </header>
+  <main>
+    <section class="matches">
+      <!-- Les journées et matches seront injectés ici -->
+      <div id="rounds"></div>
+    </section>
+    <aside class="standings">
+      <h2>Classement</h2>
+      <table id="table-standings">
+        <thead>
+          <tr><th>#</th><th>Équipe</th><th>Pts</th><th>Diff</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </aside>
+  </main>
+
+  <template id="match-row-template">
+    <div class="match-row">
+      <div class="team home">
+        <span class="kit" aria-hidden="true"></span>
+        <span class="name"></span>
+      </div>
+      <div class="score">
+        <input type="number" class="g home-goals" min="0" aria-label="Buts domicile" />
+        <span class="sep">-</span>
+        <input type="number" class="g away-goals" min="0" aria-label="Buts extérieur" />
+      </div>
+      <div class="team away">
+        <span class="name"></span>
+        <span class="kit" aria-hidden="true"></span>
+      </div>
+      <div class="actions">
+        <button class="btn-sim" aria-label="Simuler ce match" title="Simuler ce match">▶</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="./config.js"></script>
+  <script>
+    // Générer dynamiquement le CSS des kits depuis la configuration
+    if(typeof TEAMS_CONFIG !== 'undefined'){
+      const style = document.createElement('style');
+      let css = '';
+      TEAMS_CONFIG.forEach(team => {
+        const shadow = team.kit.shadow === 'inset'
+          ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
+          : '';
+        css += `.kit.team-${team.id}{background:${team.kit.bg}${shadow}}\n`;
+      });
+      style.textContent = css;
+      document.head.appendChild(style);
+    }
+  </script>
+  <script src="./app.js"></script>
+</body>
+</html>
