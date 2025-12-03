@@ -453,7 +453,7 @@
           const tr = document.createElement('tr');
           const tdPos = document.createElement('td'); tdPos.className='pos'; tdPos.textContent = (idx+1);
           const tdTeam = document.createElement('td'); tdTeam.className='team-cell';
-          const kit = document.createElement('span'); kit.className = 'kit team-'+r.id;
+          const kit = document.createElement('span'); kit.className = 'kit team-'+r.id.replace(/\s+/g,'');
           const name = document.createElement('span'); name.textContent = r.name;
           tdTeam.appendChild(kit); tdTeam.appendChild(name);
           const tdPts = document.createElement('td'); tdPts.textContent = r.pts;
@@ -469,7 +469,7 @@
         const tr = document.createElement('tr');
         const tdPos = document.createElement('td'); tdPos.className='pos'; tdPos.textContent = r.pos;
         const tdTeam = document.createElement('td'); tdTeam.className='team-cell';
-        const kit = document.createElement('span'); kit.className = 'kit team-'+r.id;
+        const kit = document.createElement('span'); kit.className = 'kit team-'+r.id.replace(/\s+/g,'');
         const name = document.createElement('span'); name.textContent = r.name;
         tdTeam.appendChild(kit); tdTeam.appendChild(name);
         const tdPts = document.createElement('td'); tdPts.textContent = r.pts;
@@ -564,7 +564,14 @@
     // Définir la compétition courante et les équipes
     currentCompetition = competitionId;
     const comp = COMPETITIONS_REF[competitionId];
-    TEAMS = comp.teams;
+
+    // Pour l'Euro, générer les groupes aléatoirement
+    if(comp.type === 'euro' && comp.getTeams){
+      TEAMS = comp.getTeams();
+    } else {
+      TEAMS = comp.teams;
+    }
+
     competitionType = comp.type || 'league'; // 'league' par défaut
     STORAGE_KEY = STORAGE_KEY_PREFIX + competitionId;
 

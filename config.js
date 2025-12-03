@@ -278,56 +278,66 @@ const COMPETITIONS = {
   }
 };
 
-// Euro - 32 nations européennes
-const EURO_TEAMS = [
-  // Groupe A
-  { id: 'france', name: 'France', short: 'FRA', kit: { bg: 'linear-gradient(135deg,#002395,#001a6f)' }, group: 'A' },
-  { id: 'netherlands', name: 'Pays-Bas', short: 'NED', kit: { bg: 'repeating-linear-gradient(90deg,#ff6600 0 5px,#fff 5px 10px)' }, group: 'A' },
-  { id: 'poland', name: 'Pologne', short: 'POL', kit: { bg: 'repeating-linear-gradient(90deg,#fff 0 4px,#c60c30 4px 8px)' }, group: 'A' },
-  { id: 'austria', name: 'Autriche', short: 'AUT', kit: { bg: 'repeating-linear-gradient(90deg,#000 0 4px,#ed2939 4px 8px)' }, group: 'A' },
-
-  // Groupe B
-  { id: 'spain', name: 'Espagne', short: 'ESP', kit: { bg: 'repeating-linear-gradient(90deg,#c60b1e 0 5px,#ffc400 5px 10px)' }, group: 'B' },
-  { id: 'italy', name: 'Italie', short: 'ITA', kit: { bg: 'repeating-linear-gradient(90deg,#009246 0 4px,#fff 4px 8px)' }, group: 'B' },
-  { id: 'switzerland', name: 'Suisse', short: 'SUI', kit: { bg: 'linear-gradient(135deg,#c8102e,#a80000)' }, group: 'B' },
-  { id: 'albania', name: 'Albanie', short: 'ALB', kit: { bg: 'repeating-linear-gradient(90deg,#c60c30 0 4px,#000 4px 8px)' }, group: 'B' },
-
-  // Groupe C
-  { id: 'germany', name: 'Allemagne', short: 'GER', kit: { bg: 'repeating-linear-gradient(90deg,#000 0 4px,#fff 4px 8px)' }, group: 'C' },
-  { id: 'scotland', name: 'Écosse', short: 'SCO', kit: { bg: 'repeating-linear-gradient(90deg,#0065bd 0 4px,#fff 4px 8px)' }, group: 'C' },
-  { id: 'hungary', name: 'Hongrie', short: 'HUN', kit: { bg: 'repeating-linear-gradient(90deg,#006b3f 0 4px,#fff 4px 8px)' }, group: 'C' },
-  { id: 'czechia', name: 'Tchéquie', short: 'CZE', kit: { bg: 'repeating-linear-gradient(90deg,#0033cc 0 4px,#fff 4px 8px)' }, group: 'C' },
-
-  // Groupe D
-  { id: 'england', name: 'Angleterre', short: 'ENG', kit: { bg: 'linear-gradient(135deg,#fff,#f0f0f0)', shadow: 'inset' }, group: 'D' },
-  { id: 'denmark', name: 'Danemark', short: 'DEN', kit: { bg: 'repeating-linear-gradient(90deg,#c8102e 0 4px,#fff 4px 8px)' }, group: 'D' },
-  { id: 'serbia', name: 'Serbie', short: 'SRB', kit: { bg: 'repeating-linear-gradient(90deg,#003087 0 4px,#fff 4px 8px)' }, group: 'D' },
-  { id: 'slovenia', name: 'Slovénie', short: 'SVN', kit: { bg: 'repeating-linear-gradient(90deg,#005eb8 0 4px,#fff 4px 8px)' }, group: 'D' },
-
-  // Groupe E
-  { id: 'belgium', name: 'Belgique', short: 'BEL', kit: { bg: 'repeating-linear-gradient(90deg,#ce1126 0 4px,#000 4px 8px)' }, group: 'E' },
-  { id: 'romania', name: 'Roumanie', short: 'ROU', kit: { bg: 'repeating-linear-gradient(90deg,#002da5 0 4px,#fff 4px 8px)' }, group: 'E' },
-  { id: 'ukraine', name: 'Ukraine', short: 'UKR', kit: { bg: 'repeating-linear-gradient(90deg,#005bbb 0 4px,#ffd500 4px 8px)' }, group: 'E' },
-  { id: 'slovakia', name: 'Slovaquie', short: 'SVK', kit: { bg: 'repeating-linear-gradient(90deg,#0b4f8c 0 4px,#fff 4px 8px)' }, group: 'E' },
-
-  // Groupe F
-  { id: 'portugal', name: 'Portugal', short: 'POR', kit: { bg: 'repeating-linear-gradient(90deg,#006600 0 4px,#fff 4px 8px)' }, group: 'F' },
-  { id: 'turkey', name: 'Turquie', short: 'TUR', kit: { bg: 'linear-gradient(135deg,#c60c30,#a80000)' }, group: 'F' },
-  { id: 'croatia', name: 'Croatie', short: 'CRO', kit: { bg: 'repeating-linear-gradient(90deg,#c8102e 0 4px,#fff 4px 8px)' }, group: 'F' },
-  { id: 'greece', name: 'Grèce', short: 'GRE', kit: { bg: 'repeating-linear-gradient(90deg,#003087 0 4px,#fff 4px 8px)' }, group: 'F' },
-
-  // Groupe G
-  { id: 'sweden', name: 'Suède', short: 'SWE', kit: { bg: 'repeating-linear-gradient(90deg,#006aa7 0 4px,#ffcc00 4px 8px)' }, group: 'G' },
-  { id: 'norway', name: 'Norvège', short: 'NOR', kit: { bg: 'repeating-linear-gradient(90deg,#002868 0 4px,#fff 4px 8px)' }, group: 'G' },
-  { id: 'finland', name: 'Finlande', short: 'FIN', kit: { bg: 'repeating-linear-gradient(90deg,#fff 0 4px,#003580 4px 8px)' }, group: 'G' },
-  { id: 'slovenia', name: 'Slovénie', short: 'SVN', kit: { bg: 'repeating-linear-gradient(90deg,#005eb8 0 4px,#fff 4px 8px)' }, group: 'G' },
-
-  // Groupe H
-  { id: 'switzerland', name: 'Suisse', short: 'SUI', kit: { bg: 'linear-gradient(135deg,#c8102e,#a80000)' }, group: 'H' },
-  { id: 'ireland', name: 'Irlande', short: 'IRL', kit: { bg: 'repeating-linear-gradient(90deg,#169b62 0 4px,#fff 4px 8px)' }, group: 'H' },
-  { id: 'wales', name: 'Pays de Galles', short: 'WAL', kit: { bg: 'repeating-linear-gradient(90deg,#ce1126 0 4px,#fff 4px 8px)' }, group: 'H' },
-  { id: 'northern-ireland', name: 'Irlande du Nord', short: 'NIR', kit: { bg: 'linear-gradient(135deg,#003087,#001a4d)' }, group: 'H' }
+// Euro - 32 nations européennes (sans groupes assignés initialement)
+const EURO_TEAMS_BASE = [
+  { id: 'france', name: 'France', short: 'FRA', kit: { bg: 'linear-gradient(135deg,#002395,#001a6f)' } },
+  { id: 'netherlands', name: 'Pays-Bas', short: 'NED', kit: { bg: 'repeating-linear-gradient(90deg,#ff6600 0 5px,#fff 5px 10px)' } },
+  { id: 'poland', name: 'Pologne', short: 'POL', kit: { bg: 'repeating-linear-gradient(90deg,#fff 0 4px,#c60c30 4px 8px)' } },
+  { id: 'austria', name: 'Autriche', short: 'AUT', kit: { bg: 'repeating-linear-gradient(90deg,#000 0 4px,#ed2939 4px 8px)' } },
+  { id: 'spain', name: 'Espagne', short: 'ESP', kit: { bg: 'repeating-linear-gradient(90deg,#c60b1e 0 5px,#ffc400 5px 10px)' } },
+  { id: 'italy', name: 'Italie', short: 'ITA', kit: { bg: 'repeating-linear-gradient(90deg,#009246 0 4px,#fff 4px 8px)' } },
+  { id: 'switzerland', name: 'Suisse', short: 'SUI', kit: { bg: 'linear-gradient(135deg,#c8102e,#a80000)' } },
+  { id: 'albania', name: 'Albanie', short: 'ALB', kit: { bg: 'repeating-linear-gradient(90deg,#c60c30 0 4px,#000 4px 8px)' } },
+  { id: 'germany', name: 'Allemagne', short: 'GER', kit: { bg: 'repeating-linear-gradient(90deg,#000 0 4px,#fff 4px 8px)' } },
+  { id: 'scotland', name: 'Écosse', short: 'SCO', kit: { bg: 'repeating-linear-gradient(90deg,#0065bd 0 4px,#fff 4px 8px)' } },
+  { id: 'hungary', name: 'Hongrie', short: 'HUN', kit: { bg: 'repeating-linear-gradient(90deg,#006b3f 0 4px,#fff 4px 8px)' } },
+  { id: 'czechia', name: 'Tchéquie', short: 'CZE', kit: { bg: 'repeating-linear-gradient(90deg,#0033cc 0 4px,#fff 4px 8px)' } },
+  { id: 'england', name: 'Angleterre', short: 'ENG', kit: { bg: 'linear-gradient(135deg,#fff,#f0f0f0)', shadow: 'inset' } },
+  { id: 'denmark', name: 'Danemark', short: 'DEN', kit: { bg: 'repeating-linear-gradient(90deg,#c8102e 0 4px,#fff 4px 8px)' } },
+  { id: 'serbia', name: 'Serbie', short: 'SRB', kit: { bg: 'repeating-linear-gradient(90deg,#003087 0 4px,#fff 4px 8px)' } },
+  { id: 'slovenia', name: 'Slovénie', short: 'SVN', kit: { bg: 'repeating-linear-gradient(90deg,#005eb8 0 4px,#fff 4px 8px)' } },
+  { id: 'belgium', name: 'Belgique', short: 'BEL', kit: { bg: 'repeating-linear-gradient(90deg,#ce1126 0 4px,#000 4px 8px)' } },
+  { id: 'romania', name: 'Roumanie', short: 'ROU', kit: { bg: 'repeating-linear-gradient(90deg,#002da5 0 4px,#fff 4px 8px)' } },
+  { id: 'ukraine', name: 'Ukraine', short: 'UKR', kit: { bg: 'repeating-linear-gradient(90deg,#005bbb 0 4px,#ffd500 4px 8px)' } },
+  { id: 'slovakia', name: 'Slovaquie', short: 'SVK', kit: { bg: 'repeating-linear-gradient(90deg,#0b4f8c 0 4px,#fff 4px 8px)' } },
+  { id: 'portugal', name: 'Portugal', short: 'POR', kit: { bg: 'repeating-linear-gradient(90deg,#006600 0 4px,#fff 4px 8px)' } },
+  { id: 'turkey', name: 'Turquie', short: 'TUR', kit: { bg: 'linear-gradient(135deg,#c60c30,#a80000)' } },
+  { id: 'croatia', name: 'Croatie', short: 'CRO', kit: { bg: 'repeating-linear-gradient(90deg,#c8102e 0 4px,#fff 4px 8px)' } },
+  { id: 'greece', name: 'Grèce', short: 'GRE', kit: { bg: 'repeating-linear-gradient(90deg,#003087 0 4px,#fff 4px 8px)' } },
+  { id: 'sweden', name: 'Suède', short: 'SWE', kit: { bg: 'repeating-linear-gradient(90deg,#006aa7 0 4px,#ffcc00 4px 8px)' } },
+  { id: 'norway', name: 'Norvège', short: 'NOR', kit: { bg: 'repeating-linear-gradient(90deg,#002868 0 4px,#fff 4px 8px)' } },
+  { id: 'finland', name: 'Finlande', short: 'FIN', kit: { bg: 'repeating-linear-gradient(90deg,#fff 0 4px,#003580 4px 8px)' } },
+  { id: 'iceland', name: 'Islande', short: 'ISL', kit: { bg: 'repeating-linear-gradient(90deg,#003087 0 4px,#ffffff 4px 8px)' } },
+  { id: 'ireland', name: 'Irlande', short: 'IRL', kit: { bg: 'repeating-linear-gradient(90deg,#169b62 0 4px,#fff 4px 8px)' } },
+  { id: 'wales', name: 'Pays de Galles', short: 'WAL', kit: { bg: 'repeating-linear-gradient(90deg,#ce1126 0 4px,#fff 4px 8px)' } },
+  { id: 'northern-ireland', name: 'Irlande du Nord', short: 'NIR', kit: { bg: 'linear-gradient(135deg,#003087,#001a4d)' } },
+  { id: 'bournemouth', name: 'Bulgarie', short: 'BUL', kit: { bg: 'repeating-linear-gradient(90deg,#fff 0 4px,#000 4px 8px)' } }
 ];
+
+// Fonction pour générer les groupes aléatoirement
+function generateRandomGroups(teams) {
+  const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  const teamsWithGroups = [];
+  const groupedTeams = {};
+
+  // Initialiser les groupes
+  groups.forEach(g => { groupedTeams[g] = []; });
+
+  // Copier les équipes et les mélanger
+  const shuffled = [...teams].sort(() => Math.random() - 0.5);
+
+  // Distribuer les équipes dans les groupes (4 équipes par groupe)
+  shuffled.forEach((team, idx) => {
+    const groupLetter = groups[Math.floor(idx / 4)];
+    teamsWithGroups.push({
+      ...team,
+      group: groupLetter
+    });
+    groupedTeams[groupLetter].push(team.id);
+  });
+
+  return teamsWithGroups;
+}
 
 const COMPETITIONS_GROUPS = {
   'euro': {
@@ -336,8 +346,12 @@ const COMPETITIONS_GROUPS = {
     desc: '32 nations, 8 groupes',
     type: 'euro',
     isGroupStage: true,
-    teams: EURO_TEAMS,
-    groups: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    teamsBase: EURO_TEAMS_BASE,  // Équipes de base sans groupes
+    groups: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+    // Les équipes avec groupes assignés seront générées dynamiquement
+    getTeams: function() {
+      return generateRandomGroups(this.teamsBase);
+    }
   }
 };
 

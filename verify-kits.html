@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Vérification finale des kits</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .check { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #ddd; }
+        .check.ok { border-left-color: #4caf50; }
+        .check.error { border-left-color: #f44336; }
+        .status { font-weight: bold; font-size: 18px; }
+        .check.ok .status { color: #4caf50; }
+        .check.error .status { color: #f44336; }
+        .kit-preview { display: inline-block; width: 40px; height: 40px; border-radius: 50%; border: 2px solid #999; vertical-align: middle; margin-right: 10px; }
+        .team-list { margin: 10px 0; }
+        .team-item { padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>✅ Vérification des kits</h1>
+    <div id="checks"></div>
+
+    <script src="./config.js"></script>
+    <script>
+        const checkDiv = document.getElementById('checks');
+
+        function addCheck(title, isOk, details) {
+            const div = document.createElement('div');
+            div.className = 'check ' + (isOk ? 'ok' : 'error');
+            const status = isOk ? '✓' : '❌';
+            div.innerHTML = `
+                <div class="status">${status} ${title}</div>
+                <div style="margin-top: 5px; font-size: 13px; color: #666;">${details}</div>
+            `;
+            checkDiv.appendChild(div);
+        }
+
+        // Check 1: ALL_COMPETITIONS
+        if(typeof ALL_COMPETITIONS === 'undefined'){
+            addCheck('ALL_COMPETITIONS', false, 'Non défini');
+        } else {
+            addCheck('ALL_COMPETITIONS', true, `${Object.keys(ALL_COMPETITIONS).length} compétitions chargées`);
+        }
+
+        // Check 2: Équipes et kits
+        if(typeof ALL_COMPETITIONS !== 'undefined'){
+            Object.entries(ALL_COMPETITIONS).forEach(([compId, comp]) => {
+                const teams = comp.getTeams ? comp.getTeams() : comp.teams;
+
+                if(!teams){
+                    addCheck(`${comp.name}: Équipes`, false, 'getTeams() ou teams() introuvable');
+                    return;
+                }
+
+                // Vérifier que chaque équipe a un kit
+                const badTeams = teams.filter(t => !t.kit || !t.kit.bg);
+                if(badTeams.length > 0){
+                    addCheck(`${comp.name}: Kits`, false, `${badTeams.length}/${teams.length} équipes sans kit.bg`);
+                } else {
+                    addCheck(`${comp.name}: Kits`, true, `${teams.length} équipes avec kits valides`);
+                }
+
+                // Vérifier les IDs
+                const badIds = teams.filter(t => /\s/.test(t.id));
+                if(badIds.length > 0){
+                    addCheck(`${comp.name}: IDs`, false, `${badIds.length} équipes avec espaces dans l'ID`);
+                } else {
+                    addCheck(`${comp.name}: IDs`, true, `Tous les IDs sont valides (sans espaces)`);
+                }
+
+                // Aperçu visuel
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'team-list';
+                teams.slice(0, 4).forEach(team => {
+                    const item = document.createElement('div');
+                    item.className = 'team-item';
+                    item.innerHTML = `<div class="kit-preview" style="background: ${team.kit.bg}"></div> ${team.name} (${team.id})`;
+                    previewDiv.appendChild(item);
+                });
+                if(teams.length > 4){
+                    const more = document.createElement('div');
+                    more.className = 'team-item';
+                    more.textContent = `... et ${teams.length - 4} autres`;
+                    previewDiv.appendChild(more);
+                }
+                previewDiv.style.marginTop = '10px';
+                previewDiv.style.fontSize = '12px';
+                checkDiv.lastChild.appendChild(previewDiv);
+            });
+        }
+
+        // Check 3: CSS générés
+        const testStyle = document.createElement('style');
+        let cssCount = 0;
+
+        if(typeof ALL_COMPETITIONS !== 'undefined'){
+            let css = '';
+            Object.values(ALL_COMPETITIONS).forEach(comp => {
+                const teams = comp.getTeams ? comp.getTeams() : comp.teams;
+                if(!teams) return;
+
+                teams.forEach(team => {
+                    const shadow = team.kit.shadow === 'inset'
+                        ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
+                        : '';
+                    css += `.kit.team-${team.id.replace(/\s+/g,'')}{background:${team.kit.bg}${shadow}}\n`;
+                    cssCount++;
+                });
+            });
+            testStyle.textContent = css;
+            document.head.appendChild(testStyle);
+        }
+
+        addCheck('CSS générés', cssCount > 0, `${cssCount} règles CSS créées pour les kits`);
+
+        // Résumé
+        const summary = document.createElement('div');
+        summary.style.cssText = 'background: #e8f5e9; padding: 15px; margin-top: 20px; border-radius: 8px; border: 2px solid #4caf50;';
+        summary.innerHTML = `
+            <strong>📊 Résumé:</strong><br>
+            Les kits devraient maintenant s'afficher correctement dans l'application!<br>
+            <br>
+            <small>Si les kits sont toujours blancs, vérifiez:</small>
+            <ul style="margin: 5px 0; font-size: 12px;">
+                <li>Les IDs des équipes correspondent entre config.js et l'app</li>
+                <li>Les CSS sont bien chargés (F12 → Éléments → head)</li>
+                <li>Pas d'erreurs JavaScript (F12 → Console)</li>
+            </ul>
+        `;
+        checkDiv.appendChild(summary);
+    </script>
+</body>
+</html>
+
