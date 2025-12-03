@@ -39,6 +39,11 @@
           <div class="competition-name">Bundesliga</div>
           <div class="competition-desc">8 équipes allemandes</div>
         </button>
+        <button class="competition-btn" data-competition="euro" aria-label="Lancer l'Euro">
+          <div class="competition-icon">🏆</div>
+          <div class="competition-name">Euro</div>
+          <div class="competition-desc">32 nations, 8 groupes</div>
+        </button>
       </div>
     </div>
   </div>
@@ -93,12 +98,12 @@
   <script src="./config.js"></script>
   <script>
     // Générer dynamiquement le CSS des kits depuis la configuration
-    if(typeof COMPETITIONS !== 'undefined'){
+    if(typeof ALL_COMPETITIONS !== 'undefined'){
       const style = document.createElement('style');
       let css = '';
 
       // Générer les CSS pour tous les kits de toutes les compétitions
-      Object.values(COMPETITIONS).forEach(comp => {
+      Object.values(ALL_COMPETITIONS).forEach(comp => {
         comp.teams.forEach(team => {
           const shadow = team.kit.shadow === 'inset'
             ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
@@ -109,15 +114,17 @@
 
       style.textContent = css;
       document.head.appendChild(style);
-    } else if(typeof TEAMS_CONFIG !== 'undefined'){
+    } else if(typeof COMPETITIONS !== 'undefined'){
       // Fallback pour les anciennes versions
       const style = document.createElement('style');
       let css = '';
-      TEAMS_CONFIG.forEach(team => {
-        const shadow = team.kit.shadow === 'inset'
-          ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
-          : '';
-        css += `.kit.team-${team.id}{background:${team.kit.bg}${shadow}}\n`;
+      Object.values(COMPETITIONS).forEach(comp => {
+        comp.teams.forEach(team => {
+          const shadow = team.kit.shadow === 'inset'
+            ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
+            : '';
+          css += `.kit.team-${team.id}{background:${team.kit.bg}${shadow}}\n`;
+        });
       });
       style.textContent = css;
       document.head.appendChild(style);
