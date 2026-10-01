@@ -1,144 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Simulateur de championnat</title>
-  <link rel="stylesheet" href="./styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23fff' stroke='%23000' stroke-width='2'/><path d='M50 10 L65 30 L50 35 L35 30 Z' fill='%23000'/><path d='M50 90 L65 70 L50 65 L35 70 Z' fill='%23000'/><path d='M10 50 L30 35 L35 50 L30 65 Z' fill='%23000'/><path d='M90 50 L70 35 L65 50 L70 65 Z' fill='%23000'/><circle cx='50' cy='50' r='8' fill='%23000'/></svg>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Football Simulator</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Apply theme before first paint to avoid flash
+    if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light');
+  </script>
 </head>
 <body>
-  <!-- Page d'accueil -->
-  <div id="home-screen" class="screen active">
-    <div class="home-container">
-      <h1>⚽ Simulateur de Championnat</h1>
-      <p>Choisissez une compétition :</p>
-      <div class="competitions-list">
-        <button class="competition-btn" data-competition="english-premier" aria-label="Lancer le championnat anglais">
-          <div class="competition-icon">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
-          <div class="competition-name">Premier League</div>
-          <div class="competition-desc">8 équipes anglaises</div>
-        </button>
-        <button class="competition-btn" data-competition="italian-serie" aria-label="Lancer la Serie A italienne">
-          <div class="competition-icon">🇮🇹</div>
-          <div class="competition-name">Serie A</div>
-          <div class="competition-desc">8 équipes italiennes</div>
-        </button>
-        <button class="competition-btn" data-competition="spanish-laliga" aria-label="Lancer la La Liga espagnole">
-          <div class="competition-icon">🇪🇸</div>
-          <div class="competition-name">La Liga</div>
-          <div class="competition-desc">8 équipes espagnoles</div>
-        </button>
-        <button class="competition-btn" data-competition="french-ligue1" aria-label="Lancer la Ligue 1 française">
-          <div class="competition-icon">🇫🇷</div>
-          <div class="competition-name">Ligue 1</div>
-          <div class="competition-desc">8 équipes françaises</div>
-        </button>
-        <button class="competition-btn" data-competition="german-bundesliga" aria-label="Lancer la Bundesliga allemande">
-          <div class="competition-icon">🇩🇪</div>
-          <div class="competition-name">Bundesliga</div>
-          <div class="competition-desc">8 équipes allemandes</div>
-        </button>
-        <button class="competition-btn" data-competition="euro" aria-label="Lancer l'Euro">
-          <div class="competition-icon">🏆</div>
-          <div class="competition-name">Euro</div>
-          <div class="competition-desc">32 nations, 8 groupes</div>
-        </button>
-      </div>
-    </div>
+  <button id="theme-toggle" title="Changer le thème">☀</button>
+  <div id="app-root">
+    <div style="padding:20px;color:#a0a0c0;text-align:center">Chargement...</div>
   </div>
-
-  <!-- Écran du championnat -->
-  <div id="championship-screen" class="screen">
-    <header>
-      <h1 id="championship-title">⚽ Championnat</h1>
-      <div class="header-actions">
-        <button id="btn-random-all" title="Simuler tous les matches">▶</button>
-        <button id="btn-reset" title="Retour à l'accueil">↻</button>
-      </div>
-    </header>
-    <main>
-      <section class="matches">
-        <!-- Les journées et matches seront injectés ici -->
-        <div id="rounds"></div>
-      </section>
-      <aside class="standings">
-        <h2>Classement</h2>
-        <table id="table-standings">
-          <thead>
-            <tr><th>#</th><th>Équipe</th><th>Pts</th><th>Diff</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </aside>
-    </main>
-  </div>
-
-  <template id="match-row-template">
-    <div class="match-row">
-      <div class="team home">
-        <span class="kit" aria-hidden="true"></span>
-        <span class="name"></span>
-      </div>
-      <div class="score">
-        <input type="number" class="g home-goals" min="0" aria-label="Buts domicile" />
-        <span class="sep">-</span>
-        <input type="number" class="g away-goals" min="0" aria-label="Buts extérieur" />
-      </div>
-      <div class="team away">
-        <span class="name"></span>
-        <span class="kit" aria-hidden="true"></span>
-      </div>
-      <div class="actions">
-        <button class="btn-sim" aria-label="Simuler ce match" title="Simuler ce match">▶</button>
-      </div>
-    </div>
-  </template>
-
-  <script src="./config.js"></script>
+  <script src="js/teams-data.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/competition.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
   <script>
-    // Générer dynamiquement le CSS des kits depuis la configuration
-    function generateKitsCSS(){
-      if(typeof ALL_COMPETITIONS !== 'undefined'){
-        const style = document.createElement('style');
-        let css = '';
-
-        // Générer les CSS pour tous les kits de toutes les compétitions
-        Object.values(ALL_COMPETITIONS).forEach(comp => {
-          // Gérer le cas de l'Euro qui a une fonction getTeams()
-          const teams = comp.getTeams ? comp.getTeams() : comp.teams;
-          if(!teams) return;
-
-          teams.forEach(team => {
-            const shadow = team.kit.shadow === 'inset'
-              ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
-              : '';
-            css += `.kit.team-${team.id}{background:${team.kit.bg}${shadow}}\n`;
-          });
-        });
-
-        style.textContent = css;
-        document.head.appendChild(style);
-      } else if(typeof COMPETITIONS !== 'undefined'){
-        // Fallback pour les anciennes versions
-        const style = document.createElement('style');
-        let css = '';
-        Object.values(COMPETITIONS).forEach(comp => {
-          comp.teams.forEach(team => {
-            const shadow = team.kit.shadow === 'inset'
-              ? ';box-shadow:0 1px 3px rgba(0,0,0,0.15) inset'
-              : '';
-            css += `.kit.team-${team.id}{background:${team.kit.bg}${shadow}}\n`;
-          });
-        });
-        style.textContent = css;
-        document.head.appendChild(style);
+    (function () {
+      const btn = document.getElementById('theme-toggle');
+      function syncBtn() {
+        btn.textContent = document.documentElement.classList.contains('light') ? '🌙' : '☀';
       }
-    }
-
-    // Générer les CSS dès que le script est chargé
-    generateKitsCSS();
+      syncBtn();
+      btn.addEventListener('click', function () {
+        document.documentElement.classList.toggle('light');
+        const isLight = document.documentElement.classList.contains('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        syncBtn();
+      });
+    })();
   </script>
-  <script src="./app.js"></script>
 </body>
 </html>
